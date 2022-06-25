@@ -2,13 +2,11 @@ package com.zibro.fooddeliveryapp.view.main.home.restaurant
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
-import com.zibro.fooddeliveryapp.data.repository.RestaurantRepository
+import com.zibro.fooddeliveryapp.data.repository.restaurant.RestaurantRepository
 import com.zibro.fooddeliveryapp.model.restaurant.RestaurantModel
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RestaurantListViewModel(
     private val restaurantCategory: RestaurantCategory,

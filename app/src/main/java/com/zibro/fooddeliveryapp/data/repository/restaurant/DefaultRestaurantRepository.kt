@@ -1,4 +1,4 @@
-package com.zibro.fooddeliveryapp.data.repository
+package com.zibro.fooddeliveryapp.data.repository.restaurant
 
 import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 class DefaultRestaurantRepository(
     private val resourcesProvider : ResourceProvider,
     private val ioDispatcher: CoroutineDispatcher
-):RestaurantRepository {
+): RestaurantRepository {
     override suspend fun getList(restaurantCategory: RestaurantCategory): List<RestaurantEntity> = withContext(ioDispatcher){
         // TODO: 2022/06/22 API를 통한 데이터 받아오기
         listOf(

@@ -4,11 +4,20 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.20833333333333334" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/bg_filter_chip_state_list.xml" value="0.215625" />
+        <entry key="app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.3770833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.3770833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_autorenew_24.xml" value="0.3770833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.3770833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.3770833333333333" />
+        <entry key="app/src/main/res/drawable/ic_baseline_my_24.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_shopping_basket_24.xml" value="0.215625" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/icon_filter_chip_state_list_reset.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/text_filter_chip_state_list.xml" value="0.215625" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17553191489361702" />
+        <entry key="app/src/main/res/layout/activity_my_location.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_my.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/fragment_restaurant_list.xml" value="0.3734375" />
