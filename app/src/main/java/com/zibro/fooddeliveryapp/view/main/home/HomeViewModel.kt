@@ -6,21 +6,28 @@ import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.data.entity.MapSearchInfoEntity
 import com.zibro.fooddeliveryapp.data.repository.map.MapRepository
+import com.zibro.fooddeliveryapp.data.repository.user.DefaultUserRepository
+import com.zibro.fooddeliveryapp.data.repository.user.UserRepository
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val mapRepository: MapRepository
+    private val mapRepository: MapRepository,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
     //State-Pattern LiveData
     val homeStateLiveData = MutableLiveData<HomeState>(HomeState.Uninitialized)
 
     fun loadReverseGeoInformation(locationLatLngEntity: LocationLatLngEntity) = viewModelScope.launch{
-        val addressInfo =  mapRepository.getReverseGeoInformation(locationLatLngEntity)
         homeStateLiveData.value = HomeState.Loading
+        val userLocation = userRepository.getUserLocation()
+        val currentLocation = userLocation ?: locationLatLngEntity
+
+        val addressInfo =  mapRepository.getReverseGeoInformation(locationLatLngEntity)
         addressInfo?.let { info ->
             homeStateLiveData.value = HomeState.Success(
-                mapSearchInfoEntity = info.toSearchInfoEntity(locationLatLngEntity)
+                mapSearchInfoEntity = info.toSearchInfoEntity(locationLatLngEntity),
+                isLocationSame = currentLocation == locationLatLngEntity
             )
         } ?: kotlin.run {
             homeStateLiveData.value = HomeState.Error(

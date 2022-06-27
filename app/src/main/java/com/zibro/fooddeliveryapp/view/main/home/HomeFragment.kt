@@ -38,6 +38,7 @@ class HomeFragment : BaseFragment<HomeViewModel,FragmentHomeBinding>() {
     private val changeLocationLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result->
             if(result.resultCode == Activity.RESULT_OK){
+                //MyLocationActivity에서 전달받은 결과값으로 위치 정보 수정
                 result.data?.getParcelableExtra<MapSearchInfoEntity>(HomeViewModel.MY_LOCATION_KEY) ?.let { myLocationInfo->
                     viewModel.loadReverseGeoInformation(myLocationInfo.locationLatLngEntity)
                 }
@@ -78,6 +79,9 @@ class HomeFragment : BaseFragment<HomeViewModel,FragmentHomeBinding>() {
                 binding.filterScrollView.isVisible = true
                 binding.viewPager.isVisible = true
                 initViewPager(it.mapSearchInfoEntity.locationLatLngEntity)
+                if(it.isLocationSame.not()){
+                    Toast.makeText(requireContext(), "위치를 맞는지 확인해주세요!",Toast.LENGTH_SHORT).show()
+                }
             }
             is HomeState.Error ->{
                 binding.locationLoading.isGone = true
@@ -114,20 +118,28 @@ class HomeFragment : BaseFragment<HomeViewModel,FragmentHomeBinding>() {
         val restaurantCategories = RestaurantCategory.values()
         if(::viewPagerAdapter.isInitialized.not()){
             val restaurantListFragmentList = restaurantCategories.map {
-                RestaurantListFragment.newInstance(it)
+                RestaurantListFragment.newInstance(it,locationLatLngEntity)
             }
             viewPagerAdapter = RestaurantListFragmentPagerAdapter(
                 this@HomeFragment,
-                restaurantListFragmentList
+                restaurantListFragmentList,
+                locationLatLngEntity
             )
             viewPager.adapter = viewPagerAdapter
+            //매번 ViewPager의 Fragment가 바뀔때 마다 Fragment를 매번 새로 만드는 것이 아니라 기존것을 계속 쓸수있도록 설정
+            viewPager.offscreenPageLimit = restaurantCategories.size
+            //TabLayoutMediator : Tablayout에 Tab들을 뿌려주도록 설정
+            TabLayoutMediator(tabLayout,viewPager) { tab,position ->
+                tab.setText(restaurantCategories[position].categoryNameId)
+            }.attach()
         }
-        //매번 ViewPager의 Fragment가 바뀔때 마다 Fragment를 매번 새로 만드는 것이 아니라 기존것을 계속 쓸수있도록 설정
-        viewPager.offscreenPageLimit = restaurantCategories.size
-        //TabLayoutMediator : Tablayout에 Tab들을 뿌려주도록 설정
-        TabLayoutMediator(tabLayout,viewPager) { tab,position ->
-            tab.setText(restaurantCategories[position].categoryNameId)
-        }.attach()
+        // TODO: 2022/06/27 위치가 바뀌면 API 다시 호출
+        if(locationLatLngEntity != viewPagerAdapter.locationLatLngEntity){
+            viewPagerAdapter.locationLatLngEntity = locationLatLngEntity
+            viewPagerAdapter.fragmentList.forEach{
+                it.viewModel.setLocationLatLng(locationLatLngEntity)
+            }
+        }
     }
 
     @SuppressLint("MissingPermission")

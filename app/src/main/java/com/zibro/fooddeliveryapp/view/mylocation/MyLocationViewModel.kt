@@ -6,16 +6,15 @@ import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.data.entity.MapSearchInfoEntity
 import com.zibro.fooddeliveryapp.data.repository.map.MapRepository
-import com.zibro.fooddeliveryapp.data.repository.map.UserRepository
+import com.zibro.fooddeliveryapp.data.repository.user.UserRepository
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
-import com.zibro.fooddeliveryapp.view.main.home.HomeState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MyLocationViewModel(
     private val mapSearchInfoEntity: MapSearchInfoEntity,
     private val mapRepository: MapRepository,
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepository
 ):BaseViewModel() {
     val myLocationStateLiveData = MutableLiveData<MyLocationState>(MyLocationState.UnInitialized)
 
@@ -45,7 +44,11 @@ class MyLocationViewModel(
     fun confirmSelectLocation() = viewModelScope.launch {
         when(val data = myLocationStateLiveData.value){
             is MyLocationState.Success -> {
-
+                // TODO: 2022/06/26 유저 Location 관리하는 로직 현재 유저의 위치와 저장된 위치가 상이할 경우 고려해야함
+                userRepository.insertUserLocation(data.mapSearchInfoEntity.locationLatLngEntity)
+                myLocationStateLiveData.value = MyLocationState.Confirm(
+                    data.mapSearchInfoEntity
+                )
             }
         }
     }

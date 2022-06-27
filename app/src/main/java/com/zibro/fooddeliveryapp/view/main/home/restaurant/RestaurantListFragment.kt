@@ -3,6 +3,7 @@ package com.zibro.fooddeliveryapp.view.main.home.restaurant
 import android.util.Log
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.databinding.FragmentRestaurantListBinding
 import com.zibro.fooddeliveryapp.model.restaurant.RestaurantModel
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
@@ -15,7 +16,8 @@ import org.koin.core.parameter.parametersOf
 
 class RestaurantListFragment : BaseFragment<RestaurantListViewModel,FragmentRestaurantListBinding>() {
     private val restaurantCategory by lazy { arguments?.getSerializable(RESTAURANT_CATEGORY_KEY) as RestaurantCategory }
-    override val viewModel by viewModel<RestaurantListViewModel>{ parametersOf(restaurantCategory)}
+    private val locationLatLng by lazy { arguments?.getParcelable<LocationLatLngEntity>(LOCATION_KEY) }
+    override val viewModel by viewModel<RestaurantListViewModel>{ parametersOf(restaurantCategory,locationLatLng)}
 
     override fun getViewBinding(): FragmentRestaurantListBinding = FragmentRestaurantListBinding.inflate(layoutInflater)
     private val resourcesProvider by inject<ResourceProvider>()
@@ -39,10 +41,12 @@ class RestaurantListFragment : BaseFragment<RestaurantListViewModel,FragmentRest
 
     companion object{
         const val RESTAURANT_CATEGORY_KEY = "restaurantCategory"
-        fun newInstance(restaurantCategory: RestaurantCategory)= RestaurantListFragment().apply {
+        const val LOCATION_KEY = "location"
+        fun newInstance(restaurantCategory: RestaurantCategory,locationLatLngEntity: LocationLatLngEntity)= RestaurantListFragment().apply {
             arguments = bundleOf(
                 // TODO: 2022/06/23 아래 코드 kotlinx 더 알아보기
-                RESTAURANT_CATEGORY_KEY to restaurantCategory
+                RESTAURANT_CATEGORY_KEY to restaurantCategory,
+                LOCATION_KEY to locationLatLngEntity
             )
         }
     }
