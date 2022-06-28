@@ -2,6 +2,7 @@ package com.zibro.fooddeliveryapp.di
 
 import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.data.entity.MapSearchInfoEntity
+import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
 import com.zibro.fooddeliveryapp.data.repository.map.DefaultMapRepository
 import com.zibro.fooddeliveryapp.data.repository.map.MapRepository
 import com.zibro.fooddeliveryapp.data.repository.restaurant.DefaultRestaurantRepository
@@ -13,6 +14,7 @@ import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.main.home.HomeViewModel
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantCategory
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantListViewModel
+import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.RestaurantDetailViewModel
 import com.zibro.fooddeliveryapp.view.main.my.MyViewModel
 import com.zibro.fooddeliveryapp.view.mylocation.MyLocationViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +28,7 @@ val appModule = module {
     viewModel { MyViewModel() }
     viewModel { (mapSearchInfoEntity : MapSearchInfoEntity) -> MyLocationViewModel(mapSearchInfoEntity,get(),get()) }
     viewModel { (restaurantCategory : RestaurantCategory,locationLatLng : LocationLatLngEntity) -> RestaurantListViewModel(restaurantCategory,locationLatLng,get())}
+    viewModel { (restaurantEntity : RestaurantEntity) ->RestaurantDetailViewModel(restaurantEntity)}
 
     single<RestaurantRepository> { DefaultRestaurantRepository(get(),get(),get()) }
     single<MapRepository> { DefaultMapRepository(get(),get()) }

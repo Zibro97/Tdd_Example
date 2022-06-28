@@ -90,6 +90,8 @@
                 app:chipIconEnabled="true"
                 app:chipIconTint="@drawable/icon_filter_chip_state_list_reset"
                 android:visibility="gone"
+                tools:visibility="visible"
+                app:chipIcon="@drawable/ic_baseline_refresh_24"
                 />
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_fast_delivery"
@@ -98,7 +100,8 @@
                 style="@style/Widget.Zibro.Chip"
                 android:text="배달 빠른 순"
                 app:chipIconEnabled="true"
-                app:chipIconTint="@drawable/icon_filter_chip_state_list_reset"
+                app:chipIconTint="@drawable/icon_filter_chip_state_list_delivery_fast"
+                app:chipIcon="@drawable/ic_thunder"
                 />
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_low_delivery_tip"
@@ -108,6 +111,7 @@
                 android:text="배달팁 낮은 순"
                 app:chipIconEnabled="true"
                 app:chipIconTint="@drawable/icon_filter_chip_state_list_reset"
+                app:chipIcon="@drawable/ic_baseline_arrow_downward_24"
                 />
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_default"
@@ -117,7 +121,6 @@
                 android:text="기본 순"
                 app:chipIconEnabled="true"
                 app:chipIconTint="@drawable/icon_filter_chip_state_list_reset"
-
                 />
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_top_rate"
@@ -127,6 +130,7 @@
                 android:text="별점 높은 순"
                 app:chipIconEnabled="true"
                 app:chipIconTint="@drawable/icon_filter_chip_state_list_reset"
+                app:chipIcon="@drawable/ic_baseline_star_24"
                 />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

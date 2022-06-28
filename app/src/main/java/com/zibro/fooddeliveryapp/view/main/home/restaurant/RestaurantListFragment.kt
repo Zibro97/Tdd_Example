@@ -8,6 +8,7 @@ import com.zibro.fooddeliveryapp.databinding.FragmentRestaurantListBinding
 import com.zibro.fooddeliveryapp.model.restaurant.RestaurantModel
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.base.BaseFragment
+import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.RestaurantDetailActivity
 import com.zibro.fooddeliveryapp.widget.adapter.ModelRecyclerAdapter
 import com.zibro.fooddeliveryapp.widget.adapter.listener.restaurant.RestaurantListListener
 import org.koin.android.ext.android.inject
@@ -24,7 +25,9 @@ class RestaurantListFragment : BaseFragment<RestaurantListViewModel,FragmentRest
     private val adapter by lazy {
         ModelRecyclerAdapter<RestaurantModel,RestaurantListViewModel>(listOf(), viewModel,adapterListener = object :RestaurantListListener{
             override fun onClickItem(model: RestaurantModel) {
-                Toast.makeText(requireContext(),"$model",Toast.LENGTH_LONG).show()
+                startActivity(
+                    RestaurantDetailActivity.newIntent(requireContext(), model.toEntity())
+                )
             }
         }, resourceProvider = resourcesProvider)
     }
@@ -42,6 +45,7 @@ class RestaurantListFragment : BaseFragment<RestaurantListViewModel,FragmentRest
     companion object{
         const val RESTAURANT_CATEGORY_KEY = "restaurantCategory"
         const val LOCATION_KEY = "location"
+        const val RESTAURANT_KEY = "restaurant"
         fun newInstance(restaurantCategory: RestaurantCategory,locationLatLngEntity: LocationLatLngEntity)= RestaurantListFragment().apply {
             arguments = bundleOf(
                 // TODO: 2022/06/23 아래 코드 kotlinx 더 알아보기

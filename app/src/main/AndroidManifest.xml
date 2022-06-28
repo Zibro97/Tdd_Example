@@ -27,6 +27,9 @@
         <activity
             android:name=".view.mylocation.MyLocationActivity"
             android:exported="false" />
+        <activity
+            android:name=".view.main.home.restaurant.detail.RestaurantDetailActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

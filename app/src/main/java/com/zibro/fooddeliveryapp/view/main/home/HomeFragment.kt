@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -20,6 +19,7 @@ import com.zibro.fooddeliveryapp.databinding.FragmentHomeBinding
 import com.zibro.fooddeliveryapp.view.base.BaseFragment
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantCategory
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantListFragment
+import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantOrder
 import com.zibro.fooddeliveryapp.view.mylocation.MyLocationActivity
 import com.zibro.fooddeliveryapp.widget.adapter.RestaurantListFragmentPagerAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -102,6 +102,36 @@ class HomeFragment : BaseFragment<HomeViewModel,FragmentHomeBinding>() {
                 )
             }
         }
+        filterChipGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId) {
+                R.id.chip_default ->{
+                    chipInit.isGone = true
+                    changeRestaurantOrder(RestaurantOrder.DEFAULT)
+                }
+                R.id.chip_init ->{
+                    chipDefault.isChecked = true
+                }
+                R.id.chip_low_delivery_tip -> {
+                    chipInit.isVisible = true
+                    changeRestaurantOrder(RestaurantOrder.LOW_DELIVERY_TIP)
+                }
+                R.id.chip_fast_delivery ->{
+                    chipInit.isVisible = true
+                    changeRestaurantOrder(RestaurantOrder.FAST_DELIVERY)
+                }
+                R.id.chip_top_rate -> {
+                    chipInit.isVisible = true
+                    changeRestaurantOrder(RestaurantOrder.TOP_RATE)
+                }
+            }
+        }
+    }
+
+    private fun changeRestaurantOrder(order : RestaurantOrder){
+        viewPagerAdapter.fragmentList.forEach {
+            it.viewModel.setRestaurantOrder(order)
+        }
+
     }
 
     private fun getMyLocation(){
@@ -114,9 +144,9 @@ class HomeFragment : BaseFragment<HomeViewModel,FragmentHomeBinding>() {
         }
     }
     private fun initViewPager(locationLatLngEntity: LocationLatLngEntity) = with(binding){
-        filterChipGroup.isVisible = true
         val restaurantCategories = RestaurantCategory.values()
         if(::viewPagerAdapter.isInitialized.not()){
+            filterChipGroup.isVisible = true
             val restaurantListFragmentList = restaurantCategories.map {
                 RestaurantListFragment.newInstance(it,locationLatLngEntity)
             }
