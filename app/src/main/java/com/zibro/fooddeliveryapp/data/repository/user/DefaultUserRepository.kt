@@ -1,12 +1,15 @@
 package com.zibro.fooddeliveryapp.data.repository.user
 
 import com.zibro.fooddeliveryapp.data.db.dao.LocationDao
+import com.zibro.fooddeliveryapp.data.db.dao.RestaurantDao
 import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
+import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class DefaultUserRepository(
     private val locationDao: LocationDao,
+    private val restaurantDao: RestaurantDao,
     private val ioDispatcher: CoroutineDispatcher
 ) : UserRepository {
 
@@ -16,5 +19,21 @@ class DefaultUserRepository(
 
     override suspend fun insertUserLocation(locationLatLngEntity: LocationLatLngEntity) = withContext(ioDispatcher) {
         locationDao.insert(locationLatLngEntity)
+    }
+
+    override suspend fun getUserLikedRestaurant(restaurantTitle: String): RestaurantEntity? = withContext(ioDispatcher){
+        restaurantDao.get(restaurantTitle)
+    }
+
+    override suspend fun insertUserLikedRestaurant(restaurantEntity: RestaurantEntity) = withContext(ioDispatcher) {
+        restaurantDao.insert(restaurantEntity)
+    }
+
+    override suspend fun deleteUserLikedRestaurant(restaurantTitle: String) {
+        restaurantDao.delete(restaurantTitle)
+    }
+
+    override suspend fun deleteALlUserLikedRestaurant() {
+        restaurantDao.deleteAll()
     }
 }

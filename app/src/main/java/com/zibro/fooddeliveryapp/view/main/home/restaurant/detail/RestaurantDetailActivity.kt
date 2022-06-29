@@ -1,5 +1,6 @@
 package com.zibro.fooddeliveryapp.view.main.home.restaurant.detail
 
+import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -52,11 +53,27 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
                 startActivity(intent)
             }
         }
+        //찜 기능
         likeButton.setOnClickListener {
-
+            viewModel.toggleLikedRestaurant()
         }
         shareButton.setOnClickListener {
-
+            /***
+             * viewmodel에서 getRestaurantInfo가 있으면 info 객체를 Intent의
+             * */
+            viewModel.getRestaurantInfo()?.let { restaurantEntity ->
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = MIMETYPE_TEXT_PLAIN
+                    putExtra(
+                        Intent.EXTRA_TEXT,
+                        "맛집 :${restaurantEntity.restaurantTitle}" +
+                                "\n평점 : ${restaurantEntity.grade}"+
+                                "\n연락처 : ${restaurantEntity.restaurantTelNumber}"
+                    )
+                    Intent.createChooser(this, "친구에게 공유하기")
+                }
+                startActivity(intent)
+            }
         }
     }
 
