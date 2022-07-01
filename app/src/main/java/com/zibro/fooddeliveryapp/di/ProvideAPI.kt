@@ -1,6 +1,7 @@
 package com.zibro.fooddeliveryapp.di
 
 import com.zibro.fooddeliveryapp.BuildConfig
+import com.zibro.fooddeliveryapp.data.network.FoodApiService
 import com.zibro.fooddeliveryapp.data.network.MapApiService
 import com.zibro.fooddeliveryapp.data.url.Url
 import okhttp3.OkHttpClient
@@ -12,12 +13,26 @@ import java.util.concurrent.TimeUnit
 fun provideMapApiService(retrofit: Retrofit) : MapApiService{
     return retrofit.create(MapApiService::class.java)
 }
-fun provideRetrofit(
+fun provideRestaurantFoodApiService(retrofit: Retrofit) : FoodApiService{
+    return retrofit.create(FoodApiService::class.java)
+}
+fun provideMapRetrofit(
     okHttpClient: OkHttpClient,
     gsonConverterFactory: GsonConverterFactory
 ): Retrofit{
     return Retrofit.Builder()
         .baseUrl(Url.TMAP_URL)
+        .addConverterFactory(gsonConverterFactory)
+        .client(okHttpClient)
+        .build()
+}
+
+fun provideFoodRetrofit(
+    okHttpClient: OkHttpClient,
+    gsonConverterFactory: GsonConverterFactory
+): Retrofit{
+    return Retrofit.Builder()
+        .baseUrl(Url.FOOD_URL)
         .addConverterFactory(gsonConverterFactory)
         .client(okHttpClient)
         .build()

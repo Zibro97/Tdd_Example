@@ -3,6 +3,7 @@ package com.zibro.fooddeliveryapp.view.main.home.restaurant.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
+import com.zibro.fooddeliveryapp.data.repository.restaurant.food.RestaurantFoodRepository
 import com.zibro.fooddeliveryapp.data.repository.user.UserRepository
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
 import kotlinx.coroutines.Job
@@ -10,6 +11,7 @@ import kotlinx.coroutines.launch
 
 class RestaurantDetailViewModel(
     private val restaurantEntity: RestaurantEntity,
+    private val restaurantFoodRepository : RestaurantFoodRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
     val restaurantDetailStateLiveData = MutableLiveData<RestaurantDetailState>(RestaurantDetailState.Uninitialized)
@@ -19,9 +21,11 @@ class RestaurantDetailViewModel(
             restaurantEntity = restaurantEntity
         )
         restaurantDetailStateLiveData.value = RestaurantDetailState.Loading
+        val foods = restaurantFoodRepository.getFoods(restaurantEntity.restaurantInfoId, restaurantEntity.restaurantTitle)
         val isLiked = userRepository.getUserLikedRestaurant(restaurantEntity.restaurantTitle) != null
         restaurantDetailStateLiveData.value = RestaurantDetailState.Success(
             restaurantEntity,
+            foods,
             isLiked
         )
     }
