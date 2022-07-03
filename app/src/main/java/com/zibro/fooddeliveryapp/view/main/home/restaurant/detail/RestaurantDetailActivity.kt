@@ -6,19 +6,27 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
+import com.zibro.fooddeliveryapp.data.entity.restaurant.RestaurantFoodEntity
 import com.zibro.fooddeliveryapp.databinding.ActivityRestaurantDetailBinding
 import com.zibro.fooddeliveryapp.extension.fromDpToPx
 import com.zibro.fooddeliveryapp.extension.load
 import com.zibro.fooddeliveryapp.view.base.BaseActivity
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantListFragment
+import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.menu.RestaurantMenuListFragment
+import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.review.RestaurantReviewListFragment
+import com.zibro.fooddeliveryapp.widget.adapter.RestaurantDetailListFragmentPagerAdapter
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.math.abs
 
 class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,ActivityRestaurantDetailBinding>() {
+    private lateinit var viewPagerAdapter : RestaurantDetailListFragmentPagerAdapter
+
     override val viewModel by viewModel<RestaurantDetailViewModel>(){
         parametersOf(
             intent.getParcelableExtra<RestaurantEntity>(RestaurantListFragment.RESTAURANT_KEY)
@@ -79,12 +87,22 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
 
     override fun observeData() = viewModel.restaurantDetailStateLiveData.observe(this){
         when(it){
+            is RestaurantDetailState.Loading -> {
+                handleLoading()
+            }
             is RestaurantDetailState.Success ->{
                 handleSuccess(it)
             }
+            else -> Unit
         }
     }
+
+    private fun handleLoading() = with(binding){
+        progressbar.isVisible = true
+    }
+
     private fun handleSuccess(state : RestaurantDetailState.Success) = with(binding){
+        progressbar.isGone = true
         val restaurantEntity = state.restaurantEntity
 
         callButton.isGone = restaurantEntity.restaurantTelNumber == null
@@ -103,6 +121,31 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
             }),
             null, null, null
         )
+        if(::viewPagerAdapter.isInitialized.not()){
+            initViewPager(state.restaurantEntity.restaurantInfoId, state.restaurantFoodList)
+        }
+    }
+
+
+    private fun initViewPager(restaurantInfoId : Long , restaurantFoodList : List<RestaurantFoodEntity>?){
+        viewPagerAdapter = RestaurantDetailListFragmentPagerAdapter(
+            this,
+            listOf(
+                // TODO: 2022/07/03 fragmentList
+                RestaurantMenuListFragment.newInstance(
+                    restaurantInfoId,ArrayList(restaurantFoodList ?: listOf()
+                    )
+                ),
+                RestaurantReviewListFragment.newInstance(
+                    restaurantInfoId,ArrayList(restaurantFoodList ?: listOf()
+                    )
+                ),
+            )
+        )
+        binding.menuAndReviewViewpager.adapter= viewPagerAdapter
+        TabLayoutMediator(binding.menuAndReviewTabLayout, binding.menuAndReviewViewpager) { tab,position ->
+            tab.setText(RestaurantCategoryDetail.values()[position].categoryNameId)
+        }.attach()
     }
 
     companion object{
