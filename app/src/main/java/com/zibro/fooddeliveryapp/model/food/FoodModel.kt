@@ -1,5 +1,6 @@
 package com.zibro.fooddeliveryapp.model.food
 
+import com.zibro.fooddeliveryapp.data.entity.restaurant.RestaurantFoodEntity
 import com.zibro.fooddeliveryapp.model.CellType
 import com.zibro.fooddeliveryapp.model.Model
 
@@ -11,5 +12,18 @@ data class FoodModel(
     val price: Int,
     val imageUrl: String,
     val restaurantId: Long,
-    val restaurantTitle: String
-) : Model(id, type)
+    val restaurantTitle: String,
+    val foodId : String
+) : Model(id, type) {
+
+    fun toEntity(basketIdx : Int) = RestaurantFoodEntity(
+        "${foodId}_${basketIdx}",
+        title,
+        description,
+        price,
+        imageUrl,
+        restaurantId,
+        restaurantTitle
+    )
+
+}

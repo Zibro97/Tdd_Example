@@ -65,31 +65,46 @@ class HomeFragment : BaseFragment<HomeViewModel,FragmentHomeBinding>() {
         }
     }
 
-    override fun observeData()  = viewModel.homeStateLiveData.observe(viewLifecycleOwner){
-        when(it){
-            is HomeState.Uninitialized -> getMyLocation()
-            is HomeState.Loading -> {
-                binding.locationLoading.isVisible = true
-                binding.locationText.setText(R.string.loading)
-            }
-            is HomeState.Success -> {
-                binding.locationLoading.isGone =true
-                binding.locationText.text = it.mapSearchInfoEntity.fullAddress
-                binding.tabLayout.isVisible = true
-                binding.filterScrollView.isVisible = true
-                binding.viewPager.isVisible = true
-                initViewPager(it.mapSearchInfoEntity.locationLatLngEntity)
-                if(it.isLocationSame.not()){
-                    Toast.makeText(requireContext(), "위치를 맞는지 확인해주세요!",Toast.LENGTH_SHORT).show()
+    override fun observeData() = with(viewModel){
+        viewModel.homeStateLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                is HomeState.Uninitialized -> getMyLocation()
+                is HomeState.Loading -> {
+                    binding.locationLoading.isVisible = true
+                    binding.locationText.setText(R.string.loading)
+                }
+                is HomeState.Success -> {
+                    binding.locationLoading.isGone = true
+                    binding.locationText.text = it.mapSearchInfoEntity.fullAddress
+                    binding.tabLayout.isVisible = true
+                    binding.filterScrollView.isVisible = true
+                    binding.viewPager.isVisible = true
+                    initViewPager(it.mapSearchInfoEntity.locationLatLngEntity)
+                    if (it.isLocationSame.not()) {
+                        Toast.makeText(requireContext(), "위치를 맞는지 확인해주세요!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+                is HomeState.Error -> {
+                    binding.locationLoading.isGone = true
+                    binding.locationText.setText(R.string.location_not_found)
+                    binding.locationText.setOnClickListener {
+                        getMyLocation()
+                    }
+                    Toast.makeText(requireContext(), it.messageId, Toast.LENGTH_SHORT).show()
                 }
             }
-            is HomeState.Error ->{
-                binding.locationLoading.isGone = true
-                binding.locationText.setText(R.string.location_not_found)
-                binding.locationText.setOnClickListener {
-                    getMyLocation()
+        }
+        viewModel.foodMenuBasketLiveData.observe(viewLifecycleOwner) {
+            if(it.isNotEmpty()){
+                binding.basketButtonContainer.isVisible = true
+                binding.basketCountTextview.text = getString(R.string.basket_count,it.size)
+                binding.basketButton.setOnClickListener{
+                    // TODO: 2022/07/04 장바구니 페이지 이동 or 로그인 
                 }
-                Toast.makeText(requireContext(),it.messageId,Toast.LENGTH_SHORT).show()
+            }else {
+                binding.basketButtonContainer.isGone = true
+                binding.basketButton.setOnClickListener(null)
             }
         }
     }
@@ -170,6 +185,13 @@ class HomeFragment : BaseFragment<HomeViewModel,FragmentHomeBinding>() {
                 it.viewModel.setLocationLatLng(locationLatLngEntity)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //장바구니 개수 체크후
+        viewModel.checkMyBasket()
+        viewModel.fetchData()
     }
 
     @SuppressLint("MissingPermission")

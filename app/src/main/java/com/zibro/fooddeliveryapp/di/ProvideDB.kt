@@ -10,3 +10,5 @@ fun provideDB(context: Context) : ApplicationDataBase = Room.databaseBuilder(con
 fun provideLocationDao(dataBase: ApplicationDataBase) = dataBase.locationDao()
 
 fun provideRestaurantDao(dataBase: ApplicationDataBase) = dataBase.restaurantDao()
+
+fun provideFoodMenuBasketDao(dataBase: ApplicationDataBase) = dataBase.foodMenuBasketDao()

@@ -9,6 +9,7 @@ import com.zibro.fooddeliveryapp.model.food.FoodModel
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
 import com.zibro.fooddeliveryapp.widget.adapter.listener.AdapterListener
+import com.zibro.fooddeliveryapp.widget.adapter.listener.restaurant.FoodMenuListListener
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.ModelViewHolder
 
 class FoodMenuViewHolder(
@@ -32,5 +33,10 @@ class FoodMenuViewHolder(
     }
 
     override fun bindViews(model: FoodModel, adapterListener: AdapterListener) {
+        if(adapterListener is FoodMenuListListener){
+            binding.root.setOnClickListener {
+                adapterListener.onClickItem(model)
+            }
+        }
     }
 }

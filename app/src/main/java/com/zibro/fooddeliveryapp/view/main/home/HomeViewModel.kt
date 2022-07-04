@@ -5,18 +5,24 @@ import androidx.lifecycle.viewModelScope
 import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.data.entity.MapSearchInfoEntity
+import com.zibro.fooddeliveryapp.data.entity.restaurant.RestaurantFoodEntity
 import com.zibro.fooddeliveryapp.data.repository.map.MapRepository
+import com.zibro.fooddeliveryapp.data.repository.restaurant.food.RestaurantFoodRepository
 import com.zibro.fooddeliveryapp.data.repository.user.DefaultUserRepository
 import com.zibro.fooddeliveryapp.data.repository.user.UserRepository
+import com.zibro.fooddeliveryapp.model.food.FoodModel
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val mapRepository: MapRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val restaurantFoodRepository: RestaurantFoodRepository
 ) : BaseViewModel() {
     //State-Pattern LiveData
     val homeStateLiveData = MutableLiveData<HomeState>(HomeState.Uninitialized)
+
+    val foodMenuBasketLiveData = MutableLiveData<List<RestaurantFoodEntity>>()
 
     fun loadReverseGeoInformation(locationLatLngEntity: LocationLatLngEntity) = viewModelScope.launch{
         homeStateLiveData.value = HomeState.Loading
@@ -43,6 +49,10 @@ class HomeViewModel(
             }
         }
         return null
+    }
+
+    fun checkMyBasket() = viewModelScope.launch{
+        foodMenuBasketLiveData.value = restaurantFoodRepository.getAllFoodMenuListInBasket()
     }
 
     companion object{
