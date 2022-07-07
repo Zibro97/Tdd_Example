@@ -6,7 +6,7 @@ import com.zibro.fooddeliveryapp.model.Model
 
 data class FoodModel(
     override val id: Long,
-    override val type: CellType = CellType.Food_CELL,
+    override val type: CellType = CellType.FOOD_CELL,
     val title: String,
     val description: String,
     val price: Int,

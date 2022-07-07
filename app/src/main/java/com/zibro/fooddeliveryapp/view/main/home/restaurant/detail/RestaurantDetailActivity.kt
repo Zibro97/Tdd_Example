@@ -123,7 +123,7 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
             null, null, null
         )
         if(::viewPagerAdapter.isInitialized.not()){
-            initViewPager(state.restaurantEntity.restaurantInfoId, state.restaurantFoodList)
+            initViewPager(state.restaurantEntity.restaurantInfoId,state.restaurantEntity.restaurantTitle, state.restaurantFoodList)
         }
         notifyBasketCount(state.foodMenuListInBasket)
 
@@ -133,7 +133,7 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
         }
     }
 
-    private fun initViewPager(restaurantInfoId : Long , restaurantFoodList : List<RestaurantFoodEntity>?){
+    private fun initViewPager(restaurantInfoId : Long, restaurantTitle : String,  restaurantFoodList : List<RestaurantFoodEntity>?){
         viewPagerAdapter = RestaurantDetailListFragmentPagerAdapter(
             this,
             listOf(
@@ -143,8 +143,7 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
                     )
                 ),
                 RestaurantReviewListFragment.newInstance(
-                    restaurantInfoId,ArrayList(restaurantFoodList ?: listOf()
-                    )
+                    restaurantTitle
                 ),
             )
         )
@@ -162,7 +161,6 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
         }
         basketButton.setOnClickListener {
             // TODO: 2022/07/04 주문하기 View로 이동 or 로그인
-
         }
     }
 

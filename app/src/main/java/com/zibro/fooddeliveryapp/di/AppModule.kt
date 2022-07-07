@@ -10,6 +10,8 @@ import com.zibro.fooddeliveryapp.data.repository.restaurant.DefaultRestaurantRep
 import com.zibro.fooddeliveryapp.data.repository.restaurant.RestaurantRepository
 import com.zibro.fooddeliveryapp.data.repository.restaurant.food.DefaultRestaurantFoodRepository
 import com.zibro.fooddeliveryapp.data.repository.restaurant.food.RestaurantFoodRepository
+import com.zibro.fooddeliveryapp.data.repository.restaurant.review.DefaultRestaurantReviewRepository
+import com.zibro.fooddeliveryapp.data.repository.restaurant.review.RestaurantReviewRepository
 import com.zibro.fooddeliveryapp.data.repository.user.DefaultUserRepository
 import com.zibro.fooddeliveryapp.data.repository.user.UserRepository
 import com.zibro.fooddeliveryapp.util.provider.DefaultResourcesProvider
@@ -19,6 +21,7 @@ import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantCategory
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantListViewModel
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.RestaurantDetailViewModel
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.menu.RestaurantMenuListViewModel
+import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.review.RestaurantReviewListViewModel
 import com.zibro.fooddeliveryapp.view.main.my.MyViewModel
 import com.zibro.fooddeliveryapp.view.mylocation.MyLocationViewModel
 import kotlinx.coroutines.Dispatchers
@@ -35,11 +38,13 @@ val appModule = module {
     viewModel { (restaurantCategory : RestaurantCategory,locationLatLng : LocationLatLngEntity) -> RestaurantListViewModel(restaurantCategory,locationLatLng,get())}
     viewModel { (restaurantEntity : RestaurantEntity) ->RestaurantDetailViewModel(restaurantEntity,get(),get())}
     viewModel { (restaurantId : Long, restaurantFoodList:List<RestaurantFoodEntity>) -> RestaurantMenuListViewModel(restaurantId,restaurantFoodList,get())}
+    viewModel { (restaurantTitle: String) -> RestaurantReviewListViewModel(restaurantTitle,get()) }
 
     single<RestaurantRepository> { DefaultRestaurantRepository(get(),get(),get()) }
     single<MapRepository> { DefaultMapRepository(get(),get()) }
     single<UserRepository> { DefaultUserRepository(get(),get(),get()) }
     single<RestaurantFoodRepository> { DefaultRestaurantFoodRepository(get(),get(),get()) }
+    single<RestaurantReviewRepository> { DefaultRestaurantReviewRepository(get()) }
 
     single { provideGsonConvertFactory()  }
     single { buildOkHttpClient()  }

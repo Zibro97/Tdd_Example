@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.zibro.fooddeliveryapp.databinding.ViewholderEmptyBinding
 import com.zibro.fooddeliveryapp.databinding.ViewholderFoodMenuBinding
 import com.zibro.fooddeliveryapp.databinding.ViewholderRestaurantBinding
+import com.zibro.fooddeliveryapp.databinding.ViewholderReviewBinding
 import com.zibro.fooddeliveryapp.model.CellType
 import com.zibro.fooddeliveryapp.model.Model
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
@@ -13,6 +14,7 @@ import com.zibro.fooddeliveryapp.widget.adapter.viewholder.EmptyViewHolder
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.ModelViewHolder
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.Restaurant.RestaurantViewHolder
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.food.FoodMenuViewHolder
+import com.zibro.fooddeliveryapp.widget.adapter.viewholder.review.ReviewViewHolder
 
 object ModelViewHolderMapper {
 
@@ -35,8 +37,13 @@ object ModelViewHolderMapper {
                 viewModel,
                 resourceProvider
             )
-            CellType.Food_CELL -> FoodMenuViewHolder(
+            CellType.FOOD_CELL -> FoodMenuViewHolder(
                 ViewholderFoodMenuBinding.inflate(inflater, parent,false),
+                viewModel,
+                resourceProvider
+            )
+            CellType.REVIEW_CELL ->  ReviewViewHolder(
+                ViewholderReviewBinding.inflate(inflater,parent,false),
                 viewModel,
                 resourceProvider
             )
