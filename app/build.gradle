@@ -3,7 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
-//    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -56,6 +56,8 @@ dependencies {
     // Google Map
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+    //Google Auth
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
     // OkHttp3
     implementation "com.squareup.okhttp3:okhttp:4.9.0"
@@ -85,12 +87,12 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.4.1"
 
     // Firebase
-//    implementation platform('com.google.firebase:firebase-bom:27.1.0')
-//    implementation 'com.google.firebase:firebase-analytics-ktx'
-//    implementation 'com.google.firebase:firebase-auth:21.0.5'
-//    implementation 'com.google.firebase:firebase-firestore-ktx'
-//    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.9'
-//    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-auth:21.0.5'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.3.9'
+    implementation 'com.google.firebase:firebase-storage-ktx'
 
     // CameraX
     // CameraX core library using camera2 implementation

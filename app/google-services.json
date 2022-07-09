@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "114633701965",
+    "project_id": "food-delivery-app-8e1e8",
+    "storage_bucket": "food-delivery-app-8e1e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:114633701965:android:b841f859a4285e0b857a04",
+        "android_client_info": {
+          "package_name": "com.zibro.fooddeliveryapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "114633701965-qf015aoa861b4u7v0085lnhdenba9qov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zibro.fooddeliveryapp",
+            "certificate_hash": "5bf591f762d66f32d9f20770dea27b1d6b7f9039"
+          }
+        },
+        {
+          "client_id": "114633701965-i6q0rfkf85vj10uk61k5u76o5e0ddo2q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVHpq0ACrRitcqiq4jKd00s217IbbDtUo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "114633701965-i6q0rfkf85vj10uk61k5u76o5e0ddo2q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

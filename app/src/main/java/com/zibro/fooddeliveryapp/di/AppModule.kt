@@ -4,6 +4,7 @@ import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.data.entity.MapSearchInfoEntity
 import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
 import com.zibro.fooddeliveryapp.data.entity.restaurant.RestaurantFoodEntity
+import com.zibro.fooddeliveryapp.data.preference.AppPreferenceManager
 import com.zibro.fooddeliveryapp.data.repository.map.DefaultMapRepository
 import com.zibro.fooddeliveryapp.data.repository.map.MapRepository
 import com.zibro.fooddeliveryapp.data.repository.restaurant.DefaultRestaurantRepository
@@ -33,7 +34,7 @@ import org.koin.dsl.module
 val appModule = module {
 
     viewModel { HomeViewModel(get(),get(),get()) }
-    viewModel { MyViewModel() }
+    viewModel { MyViewModel(get()) }
     viewModel { (mapSearchInfoEntity : MapSearchInfoEntity) -> MyLocationViewModel(mapSearchInfoEntity,get(),get()) }
     viewModel { (restaurantCategory : RestaurantCategory,locationLatLng : LocationLatLngEntity) -> RestaurantListViewModel(restaurantCategory,locationLatLng,get())}
     viewModel { (restaurantEntity : RestaurantEntity) ->RestaurantDetailViewModel(restaurantEntity,get(),get())}
@@ -60,6 +61,7 @@ val appModule = module {
     single { provideFoodMenuBasketDao(get()) }
 
     single<ResourceProvider> { DefaultResourcesProvider(androidApplication()) }
+    single { AppPreferenceManager(androidApplication()) }
 
     //Dispatchers
     single { Dispatchers.IO}
