@@ -12,6 +12,7 @@ import com.zibro.fooddeliveryapp.databinding.ActivityMainBinding
 import com.zibro.fooddeliveryapp.view.base.BaseActivity
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
 import com.zibro.fooddeliveryapp.view.main.home.HomeFragment
+import com.zibro.fooddeliveryapp.view.main.like.RestaurantLikeListFragment
 import com.zibro.fooddeliveryapp.view.main.my.MyFragment
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
@@ -35,6 +36,10 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         return when(item.itemId){
             R.id.menu_home -> {
                 showFragment(HomeFragment.newInstance(),HomeFragment.TAG)
+                true
+            }
+            R.id.menu_like -> {
+                showFragment(RestaurantLikeListFragment.newInstance(), RestaurantLikeListFragment.TAG)
                 true
             }
             R.id.menu_my ->{

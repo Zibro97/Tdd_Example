@@ -23,6 +23,7 @@ import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantListViewMod
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.RestaurantDetailViewModel
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.menu.RestaurantMenuListViewModel
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.review.RestaurantReviewListViewModel
+import com.zibro.fooddeliveryapp.view.main.like.RestaurantLikeListViewModel
 import com.zibro.fooddeliveryapp.view.main.my.MyViewModel
 import com.zibro.fooddeliveryapp.view.mylocation.MyLocationViewModel
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +41,7 @@ val appModule = module {
     viewModel { (restaurantEntity : RestaurantEntity) ->RestaurantDetailViewModel(restaurantEntity,get(),get())}
     viewModel { (restaurantId : Long, restaurantFoodList:List<RestaurantFoodEntity>) -> RestaurantMenuListViewModel(restaurantId,restaurantFoodList,get())}
     viewModel { (restaurantTitle: String) -> RestaurantReviewListViewModel(restaurantTitle,get()) }
+    viewModel { RestaurantLikeListViewModel(get()) }
 
     single<RestaurantRepository> { DefaultRestaurantRepository(get(),get(),get()) }
     single<MapRepository> { DefaultMapRepository(get(),get()) }

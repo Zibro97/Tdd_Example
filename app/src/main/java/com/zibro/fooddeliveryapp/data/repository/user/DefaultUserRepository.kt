@@ -36,4 +36,8 @@ class DefaultUserRepository(
     override suspend fun deleteALlUserLikedRestaurant() {
         restaurantDao.deleteAll()
     }
+
+    override suspend fun getAllUserListedRestaurantList(): List<RestaurantEntity> = withContext(ioDispatcher){
+        restaurantDao.getAll()
+    }
 }

@@ -40,7 +40,7 @@
     <string name="delivery_expected_time">%1$d~%2$d분 소요 예정</string>
     <string name="delivery_tip_range">%1$,d원 ~ %2$,d원</string>
 
-    <string name="empty_orders_text">주문 리스트가 존재하지 않습니다.</string>
+    <string name="empty_orders_text">😭주문 리스트가 존재하지 않습니다.</string>
     <string name="order">주문하기</string>
     <string name="logout">로그아웃</string>
     <string name="google_login_required">구글로그인이 필요합니다.</string>
@@ -48,11 +48,11 @@
     <string name="do_order">주문하기</string>
     <string name="clear_oder_menu">주문 취소</string>
 
-    <string name="empty_like_restaurant_text">찜한 내역이 존재하지 않습니다.</string>
+    <string name="empty_like_restaurant_text">😭찜한 내역이 존재하지 않습니다.</string>
 
     <!-- Error -->
-    <string name="request_error">요청했지만 예상치 못한 이슈가 발생했습니다 : %s</string>
-    <string name="user_id_not_found">유저 ID가 존재하지 않습니다.</string>
+    <string name="request_error">😭요청했지만 예상치 못한 이슈가 발생했습니다 : %s</string>
+    <string name="user_id_not_found">😭유저 ID가 존재하지 않습니다.</string>
 
     <!-- like list -->
     <string name="liked">찜</string>
