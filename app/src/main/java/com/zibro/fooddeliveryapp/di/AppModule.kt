@@ -15,6 +15,7 @@ import com.zibro.fooddeliveryapp.data.repository.restaurant.review.DefaultRestau
 import com.zibro.fooddeliveryapp.data.repository.restaurant.review.RestaurantReviewRepository
 import com.zibro.fooddeliveryapp.data.repository.user.DefaultUserRepository
 import com.zibro.fooddeliveryapp.data.repository.user.UserRepository
+import com.zibro.fooddeliveryapp.util.event.MenuChangeEventBus
 import com.zibro.fooddeliveryapp.util.provider.DefaultResourcesProvider
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.main.home.HomeViewModel
@@ -26,6 +27,8 @@ import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.review.Restaur
 import com.zibro.fooddeliveryapp.view.main.like.RestaurantLikeListViewModel
 import com.zibro.fooddeliveryapp.view.main.my.MyViewModel
 import com.zibro.fooddeliveryapp.view.mylocation.MyLocationViewModel
+import com.zibro.fooddeliveryapp.view.order.OrderMenuListActivity
+import com.zibro.fooddeliveryapp.view.order.OrderMenuListViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
@@ -42,6 +45,7 @@ val appModule = module {
     viewModel { (restaurantId : Long, restaurantFoodList:List<RestaurantFoodEntity>) -> RestaurantMenuListViewModel(restaurantId,restaurantFoodList,get())}
     viewModel { (restaurantTitle: String) -> RestaurantReviewListViewModel(restaurantTitle,get()) }
     viewModel { RestaurantLikeListViewModel(get()) }
+    viewModel { OrderMenuListViewModel(get()) }
 
     single<RestaurantRepository> { DefaultRestaurantRepository(get(),get(),get()) }
     single<MapRepository> { DefaultMapRepository(get(),get()) }
@@ -68,4 +72,6 @@ val appModule = module {
     //Dispatchers
     single { Dispatchers.IO}
     single { Dispatchers.Main}
+
+    single { MenuChangeEventBus() }
 }

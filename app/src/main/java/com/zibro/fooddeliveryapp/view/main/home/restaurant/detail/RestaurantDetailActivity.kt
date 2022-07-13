@@ -8,25 +8,36 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
 import com.zibro.fooddeliveryapp.data.entity.restaurant.RestaurantFoodEntity
 import com.zibro.fooddeliveryapp.databinding.ActivityRestaurantDetailBinding
 import com.zibro.fooddeliveryapp.extension.fromDpToPx
 import com.zibro.fooddeliveryapp.extension.load
+import com.zibro.fooddeliveryapp.util.event.MenuChangeEventBus
 import com.zibro.fooddeliveryapp.view.base.BaseActivity
+import com.zibro.fooddeliveryapp.view.main.MainTabMenu
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.RestaurantListFragment
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.menu.RestaurantMenuListFragment
 import com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.review.RestaurantReviewListFragment
+import com.zibro.fooddeliveryapp.view.order.OrderMenuListActivity
 import com.zibro.fooddeliveryapp.widget.adapter.RestaurantDetailListFragmentPagerAdapter
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.math.abs
 
 class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,ActivityRestaurantDetailBinding>() {
     private lateinit var viewPagerAdapter : RestaurantDetailListFragmentPagerAdapter
+
+    private val firebaseAuth by lazy { FirebaseAuth.getInstance() }
+
+    private val menuChangeEventBus by inject<MenuChangeEventBus>()
 
     override val viewModel by viewModel<RestaurantDetailViewModel>(){
         parametersOf(
@@ -67,9 +78,6 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
             viewModel.toggleLikedRestaurant()
         }
         shareButton.setOnClickListener {
-            /***
-             * viewmodel에서 getRestaurantInfo가 있으면 info 객체를 Intent의
-             * */
             viewModel.getRestaurantInfo()?.let { restaurantEntity ->
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     type = MIMETYPE_TEXT_PLAIN
@@ -137,7 +145,6 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
         viewPagerAdapter = RestaurantDetailListFragmentPagerAdapter(
             this,
             listOf(
-                // TODO: 2022/07/03 fragmentList
                 RestaurantMenuListFragment.newInstance(
                     restaurantInfoId,ArrayList(restaurantFoodList ?: listOf()
                     )
@@ -160,8 +167,34 @@ class RestaurantDetailActivity : BaseActivity<RestaurantDetailViewModel,Activity
             getString(R.string.basket_count,foodMenuListInBasket.size)
         }
         basketButton.setOnClickListener {
-            // TODO: 2022/07/04 주문하기 View로 이동 or 로그인
+            if (firebaseAuth.currentUser == null){
+                alertLoginNeed {
+                    lifecycleScope.launch {
+                        menuChangeEventBus.changeMenu(MainTabMenu.MY)
+                        finish()
+                    }
+                }
+            } else {
+                startActivity(
+                    OrderMenuListActivity.newIntent(this@RestaurantDetailActivity)
+                )
+            }
         }
+    }
+
+    private fun alertLoginNeed(afterAction : () -> Unit){
+        AlertDialog.Builder(this)
+            .setTitle("로그인이 필요합니다.")
+            .setMessage("주문하려면 로그인이 필요합니다. MY 탭으로 이동하시겠습니까?")
+            .setPositiveButton("이동") { dialog, _ ->
+                afterAction()
+                dialog.dismiss()
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     private fun alertClearNeedInBasket(afterAction: () -> Unit) {

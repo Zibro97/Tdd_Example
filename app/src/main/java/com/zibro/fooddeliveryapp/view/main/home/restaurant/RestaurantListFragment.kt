@@ -48,7 +48,6 @@ class RestaurantListFragment : BaseFragment<RestaurantListViewModel,FragmentRest
         const val RESTAURANT_KEY = "restaurant"
         fun newInstance(restaurantCategory: RestaurantCategory,locationLatLngEntity: LocationLatLngEntity)= RestaurantListFragment().apply {
             arguments = bundleOf(
-                // TODO: 2022/06/23 아래 코드 kotlinx 더 알아보기
                 RESTAURANT_CATEGORY_KEY to restaurantCategory,
                 LOCATION_KEY to locationLatLngEntity
             )

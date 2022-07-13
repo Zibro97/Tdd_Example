@@ -31,6 +31,10 @@
             android:name=".view.main.home.restaurant.detail.RestaurantDetailActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".view.order.OrderMenuListActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map" />

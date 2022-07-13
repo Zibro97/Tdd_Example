@@ -1,22 +1,27 @@
 package com.zibro.fooddeliveryapp.view.main
 
-import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationBarView
 import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.databinding.ActivityMainBinding
-import com.zibro.fooddeliveryapp.view.base.BaseActivity
-import com.zibro.fooddeliveryapp.view.base.BaseViewModel
+import com.zibro.fooddeliveryapp.util.event.MenuChangeEventBus
 import com.zibro.fooddeliveryapp.view.main.home.HomeFragment
 import com.zibro.fooddeliveryapp.view.main.like.RestaurantLikeListFragment
 import com.zibro.fooddeliveryapp.view.main.my.MyFragment
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListener {
     private lateinit var binding : ActivityMainBinding
+
+    private val menuChangeEventBus by inject<MenuChangeEventBus>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +29,18 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
         setContentView(binding.root)
 
         initViews()
+        observeData()
     }
+
+    private fun observeData() {
+        lifecycleScope.launch{
+            menuChangeEventBus.mainTabMenuFlow.collect{
+                Log.d("zibro", "observeData: $it")
+                gotoTabMenu(it)
+            }
+        }
+    }
+
     private fun initViews() = with(binding){
         bottomNavigation.run {
             setOnItemSelectedListener(this@MainActivity)
@@ -53,14 +69,24 @@ class MainActivity : AppCompatActivity(), NavigationBarView.OnItemSelectedListen
     private fun showFragment(fragment : Fragment, tag: String){
         val findFragment = supportFragmentManager.findFragmentByTag(tag)
         supportFragmentManager.fragments.forEach{ fm ->
-            supportFragmentManager.beginTransaction().hide(fm).commit()
+            supportFragmentManager.beginTransaction().hide(fm).commitAllowingStateLoss()
         }
         findFragment?.let {
-            supportFragmentManager.beginTransaction().show(it).commit()
+            supportFragmentManager.beginTransaction().show(it).commitAllowingStateLoss()
         } ?: run{
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container,fragment,tag)
-                .commit()
+                .commitAllowingStateLoss()
         }
     }
+
+    fun gotoTabMenu(mainTabMenu: MainTabMenu){
+        binding.bottomNavigation.selectedItemId = mainTabMenu.menuId
+    }
+}
+
+enum class MainTabMenu(@IdRes val menuId : Int){
+    HOME(R.id.menu_home),
+    LIKED(R.id.menu_like),
+    MY(R.id.menu_my),
 }
