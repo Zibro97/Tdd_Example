@@ -1,5 +1,8 @@
 package com.zibro.fooddeliveryapp.di
 
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.data.entity.MapSearchInfoEntity
 import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
@@ -7,6 +10,8 @@ import com.zibro.fooddeliveryapp.data.entity.restaurant.RestaurantFoodEntity
 import com.zibro.fooddeliveryapp.data.preference.AppPreferenceManager
 import com.zibro.fooddeliveryapp.data.repository.map.DefaultMapRepository
 import com.zibro.fooddeliveryapp.data.repository.map.MapRepository
+import com.zibro.fooddeliveryapp.data.repository.order.DefaultOrderRepository
+import com.zibro.fooddeliveryapp.data.repository.order.OrderRepository
 import com.zibro.fooddeliveryapp.data.repository.restaurant.DefaultRestaurantRepository
 import com.zibro.fooddeliveryapp.data.repository.restaurant.RestaurantRepository
 import com.zibro.fooddeliveryapp.data.repository.restaurant.food.DefaultRestaurantFoodRepository
@@ -45,13 +50,14 @@ val appModule = module {
     viewModel { (restaurantId : Long, restaurantFoodList:List<RestaurantFoodEntity>) -> RestaurantMenuListViewModel(restaurantId,restaurantFoodList,get())}
     viewModel { (restaurantTitle: String) -> RestaurantReviewListViewModel(restaurantTitle,get()) }
     viewModel { RestaurantLikeListViewModel(get()) }
-    viewModel { OrderMenuListViewModel(get()) }
+    viewModel { (firebaseAuth : FirebaseAuth)->OrderMenuListViewModel(get(),get(),firebaseAuth) }
 
     single<RestaurantRepository> { DefaultRestaurantRepository(get(),get(),get()) }
     single<MapRepository> { DefaultMapRepository(get(),get()) }
     single<UserRepository> { DefaultUserRepository(get(),get(),get()) }
     single<RestaurantFoodRepository> { DefaultRestaurantFoodRepository(get(),get(),get()) }
     single<RestaurantReviewRepository> { DefaultRestaurantReviewRepository(get()) }
+    single<OrderRepository> { DefaultOrderRepository(get(),get()) }
 
     single { provideGsonConvertFactory()  }
     single { buildOkHttpClient()  }
@@ -74,4 +80,6 @@ val appModule = module {
     single { Dispatchers.Main}
 
     single { MenuChangeEventBus() }
+
+    single { Firebase.firestore }
 }

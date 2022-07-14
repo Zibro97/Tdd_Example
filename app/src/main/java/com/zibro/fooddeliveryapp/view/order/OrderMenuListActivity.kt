@@ -5,6 +5,7 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.databinding.ActivityOrderMenuListBinding
 import com.zibro.fooddeliveryapp.model.food.FoodModel
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
@@ -49,10 +50,10 @@ class OrderMenuListActivity : BaseActivity<OrderMenuListViewModel,ActivityOrderM
                 handleSuccess(state)
             }
             is OrderMenuState.Order ->{
-
+                handleOrderState()
             }
             is OrderMenuState.Error ->{
-
+                handleErrorState(state)
             }
             else -> Unit
         }
@@ -71,6 +72,14 @@ class OrderMenuListActivity : BaseActivity<OrderMenuListViewModel,ActivityOrderM
             Toast.makeText(this@OrderMenuListActivity, "주문 메뉴가 없어 화면을 종료합니다.", Toast.LENGTH_SHORT).show()
             finish()
         }
+    }
+
+    private fun handleOrderState(){
+        Toast.makeText(this, "성공적으로 주문을 완료하였습니다.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleErrorState(state : OrderMenuState.Error){
+        Toast.makeText(this, getString(R.string.request_error,state.e),Toast.LENGTH_SHORT).show()
     }
 
     companion object{

@@ -3,6 +3,9 @@ package com.zibro.fooddeliveryapp.view.order
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
+import com.zibro.fooddeliveryapp.R
+import com.zibro.fooddeliveryapp.data.repository.order.OrderRepository
+import com.zibro.fooddeliveryapp.data.repository.order.ResultState
 import com.zibro.fooddeliveryapp.data.repository.restaurant.food.RestaurantFoodRepository
 import com.zibro.fooddeliveryapp.model.CellType
 import com.zibro.fooddeliveryapp.model.food.FoodModel
@@ -11,11 +14,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class OrderMenuListViewModel(
-    private val restaurantFoodRepository: RestaurantFoodRepository
+    private val restaurantFoodRepository: RestaurantFoodRepository,
+    private val orderRepository: OrderRepository,
+    private val firebaseAuth: FirebaseAuth
 ):BaseViewModel() {
-    private val firebaseAuth by lazy { FirebaseAuth.getInstance()}
 
-    val orderMenuStateLiveData = MutableLiveData<OrderMenuState>()
+    val orderMenuStateLiveData = MutableLiveData<OrderMenuState>(OrderMenuState.Uninitialized)
 
     override fun fetchData(): Job = viewModelScope.launch{
         orderMenuStateLiveData.value = OrderMenuState.Loading
@@ -38,15 +42,37 @@ class OrderMenuListViewModel(
 
     }
 
-    fun orderMenu() {
-
+    fun orderMenu() = viewModelScope.launch{
+        val foodMenuList = restaurantFoodRepository.getAllFoodMenuListInBasket()
+        if(foodMenuList.isNotEmpty()){
+            val restaurantId = foodMenuList.first().restaurantId
+            firebaseAuth.currentUser?.let { user->
+                when(val data = orderRepository.orderMenu(userId = user.uid,restaurantId = restaurantId, foodMenuList = foodMenuList)){
+                    is ResultState.Success<*> -> {
+                        restaurantFoodRepository.clearFoodMenuListInBasket()
+                        orderMenuStateLiveData.value = OrderMenuState.Order
+                    }
+                    is ResultState.Error -> {
+                        orderMenuStateLiveData.value = OrderMenuState.Error(
+                            R.string.request_error, data.e
+                        )
+                    }
+                }
+            } ?: kotlin.run {
+                orderMenuStateLiveData.value = OrderMenuState.Error(
+                    R.string.user_id_not_found, IllegalAccessException()
+                )
+            }
+        }
     }
 
-    fun clearOrderMenu() {
-
+    fun clearOrderMenu() = viewModelScope.launch{
+        restaurantFoodRepository.clearFoodMenuListInBasket()
+        fetchData()
     }
 
-    fun removeOrderMenu(model: FoodModel) {
-
+    fun removeOrderMenu(model: FoodModel) = viewModelScope.launch{
+        restaurantFoodRepository.removeFoodMenuListInBasket(model.foodId)
+        fetchData()
     }
 }
