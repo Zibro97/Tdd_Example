@@ -14,7 +14,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.zibro.fooddeliveryapp.R
 import com.zibro.fooddeliveryapp.databinding.FragmentMyBinding
 import com.zibro.fooddeliveryapp.extension.load
+import com.zibro.fooddeliveryapp.model.order.OrderModel
+import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.base.BaseFragment
+import com.zibro.fooddeliveryapp.widget.adapter.ModelRecyclerAdapter
+import com.zibro.fooddeliveryapp.widget.adapter.listener.AdapterListener
+import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.Exception
 
@@ -29,6 +34,11 @@ class MyFragment : BaseFragment<MyViewModel,FragmentMyBinding>() {
             .requestEmail()
             .build()
     }
+    private val adapter by lazy {
+        ModelRecyclerAdapter<OrderModel,MyViewModel>(listOf(),viewModel,resourceProvider,object : AdapterListener{})
+    }
+
+    private val resourceProvider by inject<ResourceProvider>()
 
     private val gsc by lazy { GoogleSignIn.getClient(requireActivity(),gso) }
 
@@ -57,6 +67,7 @@ class MyFragment : BaseFragment<MyViewModel,FragmentMyBinding>() {
             firebaseAuth.signOut()
             viewModel.signOut()
         }
+        recyclerView.adapter = adapter
     }
 
     private fun signInGoogle(){
@@ -94,6 +105,8 @@ class MyFragment : BaseFragment<MyViewModel,FragmentMyBinding>() {
         loginRequiredGroup.isGone = true
         profileImageView.load(state.profileImageUri.toString(), 60f)
         userNameTextView.text = state.userName
+
+        adapter.submitList(state.orderList)
     }
     private fun handleLoginState(myState: MyState.Login) = with(binding){
         progressbar.isVisible = true

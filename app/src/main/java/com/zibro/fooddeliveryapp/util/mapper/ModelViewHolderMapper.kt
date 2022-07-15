@@ -13,6 +13,7 @@ import com.zibro.fooddeliveryapp.widget.adapter.viewholder.Restaurant.LikeRestau
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.Restaurant.RestaurantViewHolder
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.food.FoodMenuViewHolder
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.order.OrderMenuViewHolder
+import com.zibro.fooddeliveryapp.widget.adapter.viewholder.order.OrderViewHolder
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.review.ReviewViewHolder
 
 object ModelViewHolderMapper {
@@ -53,6 +54,11 @@ object ModelViewHolderMapper {
             )
             CellType.ORDER_FOOD_CELL -> OrderMenuViewHolder(
                 ViewholderOrderMenuBinding.inflate(inflater, parent,false),
+                viewModel,
+                resourceProvider
+            )
+            CellType.ORDER_CELL -> OrderViewHolder(
+                ViewholderOrderBinding.inflate(inflater,parent,false),
                 viewModel,
                 resourceProvider
             )
