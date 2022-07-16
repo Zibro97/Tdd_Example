@@ -1,7 +1,10 @@
 package com.zibro.fooddeliveryapp.view.main.home.restaurant.detail.review
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zibro.fooddeliveryapp.data.entity.review.ReviewEntity
+import com.zibro.fooddeliveryapp.data.repository.order.ResultState
 import com.zibro.fooddeliveryapp.data.repository.restaurant.review.RestaurantReviewRepository
 import com.zibro.fooddeliveryapp.model.review.RestaurantReviewModel
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
@@ -16,17 +19,27 @@ class RestaurantReviewListViewModel(
 
     override fun fetchData(): Job = viewModelScope.launch {
         reviewStateLiveData.value=RestaurantReviewState.Loading
-        val reviews = restaurantReviewRepository.getReviews(restaurantTitle = restaurantTitle)
-        reviewStateLiveData.value=RestaurantReviewState.Success(
-            reviews.map {
-                RestaurantReviewModel(
-                    id = it.id,
-                    title = it.title,
-                    description = it.description,
-                    grade = it.grade,
-                    thumbnailImageUri = it.images?.first()
+        val result = restaurantReviewRepository.getReviews(restaurantTitle = restaurantTitle)
+        when(result){
+            is ResultState.Success<*> ->{
+                val reviews = result.data as List<ReviewEntity>
+                reviewStateLiveData.value=RestaurantReviewState.Success(
+                    reviews.map {
+                        RestaurantReviewModel(
+                            id = it.hashCode().toLong(),
+                            title = it.title,
+                            description = it.content,
+                            grade = it.rating,
+                            thumbnailImageUri = if(it.imageUrlList.isNullOrEmpty()){
+                                null
+                            } else {
+                                Uri.parse(it.imageUrlList.first())
+                            }
+                        )
+                    }
                 )
             }
-        )
+            else -> Unit
+        }
     }
 }

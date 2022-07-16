@@ -36,7 +36,7 @@ class ReviewViewHolder(
 
             reviewTitleText.text = model.title
             reviewText.text = model.description
-            ratingBar.rating = model.grade.toFloat()
+            ratingBar.rating = model.grade
         }
     }
     override fun bindViews(model: RestaurantReviewModel, adapterListener: AdapterListener) = Unit

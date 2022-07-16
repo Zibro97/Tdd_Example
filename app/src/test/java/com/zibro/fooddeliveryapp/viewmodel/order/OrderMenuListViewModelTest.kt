@@ -98,6 +98,7 @@ internal class OrderMenuListViewModelTest:ViewModelTest() {
     //3.
     @Test
     fun `test do order menu list`() = runBlockingTest {
+        `insert food menu in basket`()
         val userId = "asdf"
         Mockito.`when`(firebaseAuth.currentUser).then { firebaseUser }
         Mockito.`when`(firebaseUser.uid).then { userId }
@@ -110,7 +111,7 @@ internal class OrderMenuListViewModelTest:ViewModelTest() {
         val menuListInBasketModel = menuListInBasket.map {
             FoodModel(
                 id = it.hashCode().toLong(),
-                type = CellType.ORDER_CELL,
+                type = CellType.ORDER_FOOD_CELL,
                 title = it.title,
                 description = it.description,
                 price = it.price,

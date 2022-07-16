@@ -1,8 +1,10 @@
 package com.zibro.fooddeliveryapp.di
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.zibro.fooddeliveryapp.data.entity.LocationLatLngEntity
 import com.zibro.fooddeliveryapp.data.entity.MapSearchInfoEntity
 import com.zibro.fooddeliveryapp.data.entity.RestaurantEntity
@@ -34,6 +36,8 @@ import com.zibro.fooddeliveryapp.view.main.my.MyViewModel
 import com.zibro.fooddeliveryapp.view.mylocation.MyLocationViewModel
 import com.zibro.fooddeliveryapp.view.order.OrderMenuListActivity
 import com.zibro.fooddeliveryapp.view.order.OrderMenuListViewModel
+import com.zibro.fooddeliveryapp.view.review.gallery.GalleryPhotoRepository
+import com.zibro.fooddeliveryapp.view.review.gallery.GalleryViewModel
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
@@ -50,14 +54,16 @@ val appModule = module {
     viewModel { (restaurantId : Long, restaurantFoodList:List<RestaurantFoodEntity>) -> RestaurantMenuListViewModel(restaurantId,restaurantFoodList,get())}
     viewModel { (restaurantTitle: String) -> RestaurantReviewListViewModel(restaurantTitle,get()) }
     viewModel { RestaurantLikeListViewModel(get()) }
-    viewModel { (firebaseAuth : FirebaseAuth)->OrderMenuListViewModel(get(),get(),firebaseAuth) }
+    viewModel { OrderMenuListViewModel(get(),get(),get()) }
+    viewModel { GalleryViewModel(get()) }
 
     single<RestaurantRepository> { DefaultRestaurantRepository(get(),get(),get()) }
     single<MapRepository> { DefaultMapRepository(get(),get()) }
     single<UserRepository> { DefaultUserRepository(get(),get(),get()) }
     single<RestaurantFoodRepository> { DefaultRestaurantFoodRepository(get(),get(),get()) }
-    single<RestaurantReviewRepository> { DefaultRestaurantReviewRepository(get()) }
+    single<RestaurantReviewRepository> { DefaultRestaurantReviewRepository(get(),get() ) }
     single<OrderRepository> { DefaultOrderRepository(get(),get()) }
+    single{ GalleryPhotoRepository(get()) }
 
     single { provideGsonConvertFactory()  }
     single { buildOkHttpClient()  }
@@ -82,4 +88,6 @@ val appModule = module {
     single { MenuChangeEventBus() }
 
     single { Firebase.firestore }
+    single { FirebaseAuth.getInstance()}
+    single { Firebase.storage}
 }

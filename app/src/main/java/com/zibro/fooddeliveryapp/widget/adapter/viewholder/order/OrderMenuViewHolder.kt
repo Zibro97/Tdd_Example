@@ -2,7 +2,6 @@ package com.zibro.fooddeliveryapp.widget.adapter.viewholder.order
 
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.zibro.fooddeliveryapp.R
-import com.zibro.fooddeliveryapp.databinding.ViewholderFoodMenuBinding
 import com.zibro.fooddeliveryapp.databinding.ViewholderOrderMenuBinding
 import com.zibro.fooddeliveryapp.extension.clear
 import com.zibro.fooddeliveryapp.extension.load
@@ -10,8 +9,7 @@ import com.zibro.fooddeliveryapp.model.food.FoodModel
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.base.BaseViewModel
 import com.zibro.fooddeliveryapp.widget.adapter.listener.AdapterListener
-import com.zibro.fooddeliveryapp.widget.adapter.listener.restaurant.FoodMenuListListener
-import com.zibro.fooddeliveryapp.widget.adapter.listener.restaurant.OrderMenuListListener
+import com.zibro.fooddeliveryapp.widget.adapter.listener.order.OrderMenuListListener
 import com.zibro.fooddeliveryapp.widget.adapter.viewholder.ModelViewHolder
 
 class OrderMenuViewHolder(

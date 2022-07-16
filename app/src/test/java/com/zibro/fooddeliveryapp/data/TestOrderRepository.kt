@@ -13,8 +13,18 @@ class TestOrderRepository : OrderRepository {
     override suspend fun orderMenu(
         userId: String,
         restaurantId: Long,
-        foodMenuList: List<RestaurantFoodEntity>
+        foodMenuList: List<RestaurantFoodEntity>,
+        restaurantTitle : String
     ): ResultState {
+        orderEntities.add(
+            OrderEntity(
+                id = orderEntities.size.toString(),
+                userId = userId,
+                restaurantId = restaurantId,
+                foodMenuList = foodMenuList.map { it.copy() },
+                restaurantTitle = restaurantTitle
+            )
+        )
         return ResultState.Success<Any>()
     }
 

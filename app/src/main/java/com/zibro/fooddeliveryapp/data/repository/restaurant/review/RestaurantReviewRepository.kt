@@ -1,7 +1,7 @@
 package com.zibro.fooddeliveryapp.data.repository.restaurant.review
 
-import com.zibro.fooddeliveryapp.data.entity.review.RestaurantReviewEntity
+import com.zibro.fooddeliveryapp.data.repository.order.ResultState
 
 interface RestaurantReviewRepository {
-    suspend fun getReviews(restaurantTitle : String) : List<RestaurantReviewEntity>
+    suspend fun getReviews(restaurantTitle : String) : ResultState
 }

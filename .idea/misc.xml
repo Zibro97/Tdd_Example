@@ -6,6 +6,9 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/bg_filter_chip_state_list.xml" value="0.215625" />
+        <entry key="app/src/main/res/drawable/bg_frame_gallery.xml" value="0.3037037037037037" />
+        <entry key="app/src/main/res/drawable/bg_round_corner_8_black.xml" value="0.3037037037037037" />
+        <entry key="app/src/main/res/drawable/button_round_corner_4_black_24.xml" value="0.3037037037037037" />
         <entry key="app/src/main/res/drawable/ic_baseline_access_time_24.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_back_ios_24.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_downward_24.xml" value="0.3770833333333333" />
@@ -16,6 +19,8 @@
         <entry key="app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/ic_baseline_shopping_basket_24.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/ic_baseline_star_24.xml" value="0.3770833333333333" />
+        <entry key="app/src/main/res/drawable/ic_check_disabled.xml" value="0.3037037037037037" />
+        <entry key="app/src/main/res/drawable/ic_check_enabled.xml" value="0.3037037037037037" />
         <entry key="app/src/main/res/drawable/ic_heart_disable.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/ic_heart_enable.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.3770833333333333" />
@@ -24,10 +29,15 @@
         <entry key="app/src/main/res/drawable/icon_filter_chip_state_list_delivery_tip.xml" value="0.3770833333333333" />
         <entry key="app/src/main/res/drawable/icon_filter_chip_state_list_reset.xml" value="0.215625" />
         <entry key="app/src/main/res/drawable/text_filter_chip_state_list.xml" value="0.215625" />
+        <entry key="app/src/main/res/layout/activity_add_restaurant_review.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/activity_camera.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/activity_image_preview_list.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17553191489361702" />
         <entry key="app/src/main/res/layout/activity_my_location.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/activity_order_menu_list.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_restaurant_detail.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/bg_frame_gallery.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_list.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/layout/fragment_my.xml" value="0.1" />
@@ -35,8 +45,11 @@
         <entry key="app/src/main/res/layout/fragment_restaurant_list.xml" value="0.3734375" />
         <entry key="app/src/main/res/layout/viewholder_empty.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/viewholder_food_menu.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/viewholder_gallery_photo_item.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/viewholder_image.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/viewholder_order.xml" value="0.23177083333333334" />
         <entry key="app/src/main/res/layout/viewholder_order_menu.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/viewholder_photo_item.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/viewholder_restaurant.xml" value="0.19655797101449277" />
         <entry key="app/src/main/res/layout/viewholder_restaurant_like_list.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/viewholder_review.xml" value="0.3609375" />

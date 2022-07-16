@@ -5,7 +5,9 @@ import com.zibro.fooddeliveryapp.data.entity.restaurant.RestaurantFoodEntity
 interface OrderRepository {
     suspend fun orderMenu(userId : String,
                           restaurantId : Long,
-                          foodMenuList : List<RestaurantFoodEntity>) : ResultState
+                          foodMenuList : List<RestaurantFoodEntity>,
+                          restaurantTitle : String
+                          ) : ResultState
 
     suspend fun getAllOrderMenus(
         userId:String

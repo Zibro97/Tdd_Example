@@ -1,4 +1,4 @@
-package com.zibro.fooddeliveryapp.widget.adapter.listener.restaurant
+package com.zibro.fooddeliveryapp.widget.adapter.listener.order
 
 import com.zibro.fooddeliveryapp.model.food.FoodModel
 import com.zibro.fooddeliveryapp.widget.adapter.listener.AdapterListener

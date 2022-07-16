@@ -11,7 +11,7 @@ import com.zibro.fooddeliveryapp.model.food.FoodModel
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.base.BaseActivity
 import com.zibro.fooddeliveryapp.widget.adapter.ModelRecyclerAdapter
-import com.zibro.fooddeliveryapp.widget.adapter.listener.restaurant.OrderMenuListListener
+import com.zibro.fooddeliveryapp.widget.adapter.listener.order.OrderMenuListListener
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -19,7 +19,8 @@ class OrderMenuListActivity : BaseActivity<OrderMenuListViewModel,ActivityOrderM
     private val resourcesProvider by inject<ResourceProvider>()
 
     private val adapter by lazy {
-        ModelRecyclerAdapter<FoodModel, OrderMenuListViewModel>(listOf(), viewModel,resourcesProvider, adapterListener = object : OrderMenuListListener {
+        ModelRecyclerAdapter<FoodModel, OrderMenuListViewModel>(listOf(), viewModel,resourcesProvider, adapterListener = object :
+            OrderMenuListListener {
             override fun onRemoveItem(model: FoodModel) {
                 viewModel.removeOrderMenu(model)
             }

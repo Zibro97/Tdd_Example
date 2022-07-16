@@ -17,8 +17,9 @@ import com.zibro.fooddeliveryapp.extension.load
 import com.zibro.fooddeliveryapp.model.order.OrderModel
 import com.zibro.fooddeliveryapp.util.provider.ResourceProvider
 import com.zibro.fooddeliveryapp.view.base.BaseFragment
+import com.zibro.fooddeliveryapp.view.review.AddRestaurantReviewActivity
 import com.zibro.fooddeliveryapp.widget.adapter.ModelRecyclerAdapter
-import com.zibro.fooddeliveryapp.widget.adapter.listener.AdapterListener
+import com.zibro.fooddeliveryapp.widget.adapter.listener.order.OrderListListener
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import java.lang.Exception
@@ -35,7 +36,13 @@ class MyFragment : BaseFragment<MyViewModel,FragmentMyBinding>() {
             .build()
     }
     private val adapter by lazy {
-        ModelRecyclerAdapter<OrderModel,MyViewModel>(listOf(),viewModel,resourceProvider,object : AdapterListener{})
+        ModelRecyclerAdapter<OrderModel,MyViewModel>(listOf(),viewModel,resourceProvider,object : OrderListListener{
+            override fun writeRestaurantReview(orderId: String, restaurantTitle: String) {
+                startActivity(
+                    AddRestaurantReviewActivity.newIntent(orderId = orderId,context = requireContext(),restaurantTitle = restaurantTitle)
+                )
+            }
+        })
     }
 
     private val resourceProvider by inject<ResourceProvider>()
